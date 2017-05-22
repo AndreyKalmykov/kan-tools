@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 2.8)
 set(CPPFILES
   main.cpp
   ktMainForm.cpp
+  ktPnMenu.cpp
+  ktPnWrk.cpp
 )
 
 set(NANA_LIB "/home/kan/wrk/libs/lib/libnana.a")

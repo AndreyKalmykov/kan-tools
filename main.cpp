@@ -1,7 +1,7 @@
 #include "ktMainForm.h"
 
 int main(){
-  ktMainForm mf;
+  ktMainForm mf{};
   mf.show();
   exec();
 }
