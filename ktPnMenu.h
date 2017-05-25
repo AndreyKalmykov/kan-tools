@@ -9,7 +9,7 @@ using namespace nana;
   class ktPnMenu: public panel<true> {
 
   public:
-      ktPnMenu(window wd);
+    ktPnMenu(window wd);
   };
 
 #endif

@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 set(CPPFILES
   main.cpp
   ktMainForm.cpp
+  ktPnBar.cpp
   ktPnMenu.cpp
   ktPnWrk.cpp
 )
