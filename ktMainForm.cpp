@@ -7,6 +7,7 @@ ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
   //~ resizable(this);
   resizable(tl);
   label("kan Tools");
+
   //~ icon("kan.png");
 
   tl.align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
