@@ -1,19 +1,29 @@
-//~ #include <iostream>
+#include <iostream>
 
-#include "ktPnBar.h"
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
 
 #include "ktMainForm.h"
+#include "ktPnBar.h"
 
-ktPnBar::ktPnBar(ktMainForm& wd):panel(wd), mf{wd}{
+ktPnBar::ktPnBar(int x,int y,int w, int h): Fl_Group(x,y,w,h,"ktPnBar") {
+  box(FL_UP_BOX);
+  align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+  btnMenu.align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE);
+  btnMenu.callback(btnMenu_cb);
+  btnMenu.value(1);
 
-  bgcolor(nana::colors::green);
-  pl.div("<btn_menu weight=25><>");
-  pl["btn_menu"] << btn_menu;
-  pl.collocate();
+  begin();
+  end();
+};
+ktPnBar::~ktPnBar(){};
 
-  btn_menu.events().click([this]{ btn_menu_click(); });
-}
+void ktPnBar::btnMenu_cb(Fl_Widget *butt){
+  //~ Fl_Button *b= (Fl_Button *) butt;
+  ktMainForm *mf= (ktMainForm *)Fl::first_window();
+  mf->menuShow();
+};
 
-void ktPnBar::btn_menu_click(){
-  mf.menuShow();
+int ktPnBar::get_btnMenuState(){
+  return (int)btnMenu.value();
 }

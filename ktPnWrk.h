@@ -1,16 +1,13 @@
 #ifndef KT_PANEL_WRK
 #define KT_PANEL_WRK
 
-#include <nana/gui.hpp>
-#include <nana/gui/widgets/panel.hpp>
+#include <FL/Fl_Group.H>
 
-using namespace nana;
-
-  class ktPnWrk: public panel<true> {
-
-  public:
-    ktPnWrk(window wd);
-  };
+class ktPnWrk: public Fl_Group {
+public:
+  ktPnWrk(int x,int y,int w, int h);
+  ~ktPnWrk();
+};
 
 #endif
 

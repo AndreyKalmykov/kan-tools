@@ -1,5 +1,6 @@
-project(kTools)
+project(kTools LANGUAGES CXX)
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(CPPFILES
   main.cpp
@@ -9,18 +10,21 @@ set(CPPFILES
   ktPnWrk.cpp
 )
 
-set(NANA_LIB "/home/kan/wrk/libs/lib/libnana.a")
-set(NANA_INC "/home/kan/wrk/libs/include")
+#~ set(FLTK_DIR /home/kan/wrk/libs/share/fltk)
+#~ set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12235/build)
+set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12244/build)
 
-include_directories(${NANA_INC})
+find_package(FLTK REQUIRED NO_MODULE)
 
-find_package(Freetype)
-include_directories( ${FREETYPE_INCLUDE_DIRS})
+include_directories(${FLTK_INCLUDE_DIRS})
 
-set(STD_LIBS -lX11 -lpthread -lXft -lfontconfig -lstdc++fs)
+add_executable(${PROJECT_NAME} WIN32 ${CPPFILES})
+# target_include_directories(hello PUBLIC ${FLTK_INCLUDE_DIRS})
 
-add_executable(${PROJECT_NAME} ${CPPFILES})
+target_link_libraries(${PROJECT_NAME} fltk)
 
-target_link_libraries(${PROJECT_NAME} ${NANA_LIB} ${STD_LIBS})
-
-set_property( TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 14 )
+set_target_properties(${PROJECT_NAME}
+PROPERTIES CXX_STANDARD 14
+COMPILE_FLAGS "-Wall -fsanitize=address"
+LINK_FLAGS "-fsanitize=address"
+)

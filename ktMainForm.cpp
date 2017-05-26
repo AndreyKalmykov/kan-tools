@@ -2,27 +2,27 @@
 
 #include "ktMainForm.h"
 
-ktMainForm::ktMainForm(){
-  size({700,400});
+ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
+  hotspot(0,0,0);
+  //~ resizable(this);
+  resizable(tl);
+  label("kan Tools");
+  //~ icon("kan.png");
 
-  pl.div("<vertical <bar weight=25 margin=[0,0,2,0]>\
-          <horizontal<menu weight=0%>|<wrk>>>");
+  tl.align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
 
-  pl["bar"] << pn_bar;
-  pl["menu"] << pn_menu;
-  pl["wrk"] << pn_wrk;
-  pl.collocate();
-  //~ menuShow();
+  begin();
+  end();
+
+  menuShow();
+  //~ std::cout << "...constructor ktMainForm" << std::endl;
 };
+ktMainForm::~ktMainForm(){};
+
 void ktMainForm::menuShow(){
-  std::cout << "menuShow" << std::endl;
-  std::cout << pl.div() << std::endl;
-
-  //~ pl.div("<vertical <bar weight=25 margin=[0,0,2,0]>\
-          //~ <horizontal<menu weight=30%>|<wrk>>>");
-  //~ pl.collocate();
-  //~ pl.modify("menu","weight=30%");
-
-  //~ pl.field_display("menu",!pl.field_display("menu"));
-  //~ std::cout << pl.div() << std::endl;
-}
+  if (pnBar.get_btnMenuState()) {
+    tl.position(1,0,(int)(tl.w()*0.3),0);
+  } else {
+    tl.position(pnMenu.w(),0,1,0);
+  }
+};

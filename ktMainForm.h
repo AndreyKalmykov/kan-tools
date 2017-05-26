@@ -1,22 +1,26 @@
 #ifndef KT_MAIN_FORM
 #define KT_MAIN_FORM
 
-#include <nana/gui.hpp>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Tile.H>
+#include <FL/Fl_Box.H>
 
 #include "ktPnBar.h"
 #include "ktPnMenu.h"
 #include "ktPnWrk.h"
 
-using namespace nana;
+class ktMainForm: public Fl_Window {
+  ktPnBar pnBar{0,0,w(),30};
 
-  class ktMainForm: public form {
-    place pl {*this};
-    ktPnBar pn_bar {*this};
-    ktPnMenu pn_menu {*this};
-    ktPnWrk pn_wrk {*this};
+  Fl_Tile tl{x(),y()+pnBar.h(),w(),h()-pnBar.h(),"tl"};
 
-  public:
-    ktMainForm();
-    void menuShow();
-  };
+  ktPnMenu pnMenu{tl.x(),tl.y(),(int)(tl.w()*0.3),tl.h()};
+  ktPnWrk pnWrk{tl.x()+pnMenu.w(),tl.y(),tl.w()-pnMenu.w(),tl.h()};
+
+public:
+  ktMainForm(int sW,int sH);
+  ~ktMainForm();
+  void menuShow();
+};
+
 #endif
