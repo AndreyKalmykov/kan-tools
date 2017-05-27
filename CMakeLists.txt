@@ -14,7 +14,7 @@ set(CPPFILES
 
 
 #~ set(FLTK_DIR /home/kan/wrk/libs/share/fltk)
-#~ set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12235/build)
+#~ set(FLTK_DIR /home/kan/wrk/fltk-1.3.4-1/build)
 set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12244/build)
 
 find_package(FLTK REQUIRED NO_MODULE)
