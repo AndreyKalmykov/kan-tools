@@ -7,6 +7,7 @@ class ktPnMenu: public Fl_Group {
 public:
   ktPnMenu(int x,int y,int w, int h);
   ~ktPnMenu();
+  int handle(int e);
 };
 
 #endif

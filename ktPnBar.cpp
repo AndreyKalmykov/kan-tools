@@ -20,10 +20,13 @@ ktPnBar::~ktPnBar(){};
 
 void ktPnBar::btnMenu_cb(Fl_Widget *butt){
   //~ Fl_Button *b= (Fl_Button *) butt;
-  ktMainForm *mf= (ktMainForm *)Fl::first_window();
-  mf->menuShow();
+  ((ktMainForm *)Fl::first_window())->menuShow();
 };
 
 int ktPnBar::get_btnMenuState(){
   return (int)btnMenu.value();
+}
+
+void ktPnBar::set_btnMenuState(int s){
+  btnMenu.value(s);
 }

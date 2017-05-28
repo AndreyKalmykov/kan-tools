@@ -11,6 +11,8 @@ public:
   ~ktPnBar();
   static void btnMenu_cb(Fl_Widget *butt);
   int get_btnMenuState();
+  void set_btnMenuState(int s);
+
 };
 
 #endif

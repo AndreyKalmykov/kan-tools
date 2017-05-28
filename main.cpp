@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
   std::string icFileName= (std::string)dirname(argv[0])+(std::string)"/kTools.png";
   //~ icFileName += "/kTools.png";
 
-  std::cout << icFileName << std::endl;
+  //~ std::cout << icFileName << std::endl;
 
   ktMainForm mf{800,450}; //= new ktMainForm();
   Fl_PNG_Image appIcon{icFileName.c_str()};

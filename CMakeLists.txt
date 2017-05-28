@@ -1,6 +1,8 @@
 project(kTools LANGUAGES CXX)
 cmake_minimum_required(VERSION 2.8)
+
 set(CMAKE_BUILD_TYPE Debug)
+#~ set(CMAKE_BUILD_TYPE Release)
 
 file(COPY kTools.png DESTINATION ${PROJECT_BINARY_DIR})
 
@@ -26,8 +28,13 @@ add_executable(${PROJECT_NAME} WIN32 ${CPPFILES})
 
 target_link_libraries(${PROJECT_NAME} fltk fltk_images)
 
+if(${CMAKE_BUILD_TYPE} STREQUAL Debug)
+message(DEBUG)
+ set_target_properties(${PROJECT_NAME}
+PROPERTIES COMPILE_FLAGS "-Wall -fsanitize=address"
+LINK_FLAGS "-fsanitize=address"
+)
+endif()
 set_target_properties(${PROJECT_NAME}
 PROPERTIES CXX_STANDARD 14
-COMPILE_FLAGS "-Wall -fsanitize=address"
-LINK_FLAGS "-fsanitize=address"
 )
