@@ -43,7 +43,7 @@ void ktMainForm::menuShow(){
   //~ printf("menuShow()\n");
   tl.init_sizes();
   if (pnBar.get_btnMenuState()) {
-    tl.position(dx,0,(int)(tl.w()*0.3),0);
+    tl.position(dx,0,mn_w,0);
   } else {
     tl.position(pnMenu.w(),0,dx,0);
   }

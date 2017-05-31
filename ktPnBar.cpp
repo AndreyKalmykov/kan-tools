@@ -7,6 +7,7 @@
 #include "ktPnBar.h"
 
 ktPnBar::ktPnBar(int x,int y,int w, int h): Fl_Group(x,y,w,h,"ktPnBar") {
+  resizable(NULL);
   box(FL_UP_BOX);
   align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
   btnMenu.align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE);
