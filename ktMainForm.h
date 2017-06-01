@@ -17,15 +17,16 @@ public:
 };
 
 class ktMainForm: public Fl_Window {
-  ktPnBar pnBar{0,0,w(),30};
   int dx = 5, dy = dx; // border width of resizable() - see below
 
-  ktMainForm_Tile tl{x(),y()+pnBar.h(),w(),h()-pnBar.h(),"tl"};
-  Fl_Box r{tl.x()+dx,tl.y()+dy,tl.w()-2*dx,tl.h()-2*dy,"rBox"};
+  ktPnBar *pnBar;
 
-  int mn_w= (int)(tl.w()*0.3), mn_h= tl.h();
-  ktPnMenu pnMenu{tl.x(),tl.y(),mn_w,mn_h,*this};
-  ktPnWrk pnWrk{tl.x()+pnMenu.w(),tl.y(),tl.w()-pnMenu.w(),tl.h()};
+  ktMainForm_Tile *tl;
+  Fl_Box *r;
+
+  int mn_w= 0, mn_h= 0;
+  ktPnMenu *pnMenu;
+  ktPnWrk *pnWrk;
 
 public:
   ktMainForm(int sW,int sH);

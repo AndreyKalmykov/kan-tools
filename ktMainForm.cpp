@@ -18,39 +18,41 @@ ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
   hotspot(0,0,0);
   resizable(this);
 
-  tl.resizable(r);
-  tl.align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+  pnBar= new ktPnBar(0,0,w(),30,this);
+  tl= new ktMainForm_Tile(0,0+pnBar->h(),w(),h()-pnBar->h(),"tl");
+  mn_w= (int)(tl->w()*0.3), mn_h= tl->h();
+  tl->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+    r= new Fl_Box(tl->x()+dx,tl->y()+dy,tl->w()-2*dx,tl->h()-2*dy,"rBox");
+    tl->resizable(r);
+    pnMenu= new ktPnMenu(tl->x(),tl->y(),mn_w,mn_h,this);
+    pnWrk= new ktPnWrk(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h());
+  tl->end();
 
-  begin();
   end();
 
   menuShow();
-  //~ std::cout << "...constructor ktMainForm" << std::endl;
 };
 
 ktMainForm::~ktMainForm(){}
 
 void ktMainForm::checkMenuOpen(){
-  if (pnMenu.w() <= dx) {
-    pnBar.set_btnMenuState(0);
+  if (pnMenu->w() <= dx) {
+    pnBar->set_btnMenuState(0);
   }else {
-    pnBar.set_btnMenuState(1);
+    pnBar->set_btnMenuState(1);
   }
 }
 
 void ktMainForm::menuShow(){
-  //~ std::cout << "resizable= " << tl.resizable()->label() << " childrens= " << tl.children() << std::endl;
-  //~ printf("menuShow()\n");
-  tl.init_sizes();
-  if (pnBar.get_btnMenuState()) {
-    tl.position(dx,0,mn_w,0);
+  tl->init_sizes();
+  if (pnBar->get_btnMenuState()) {
+    tl->position(dx,0,mn_w,0);
   } else {
-    tl.position(pnMenu.w(),0,dx,0);
+    tl->position(pnMenu->w(),0,dx,0);
   }
 }
-///*
+
 int ktMainForm::handle(int e){
     //~ if (e!=FL_MOVE) printf("ktMainForm - %s (%d)\n", fl_eventnames[e], e);
     return Fl_Window::handle(e);
 }
-//*/

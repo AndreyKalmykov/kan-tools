@@ -13,11 +13,11 @@ int main(int argc, char **argv) {
 
   //~ std::cout << icFileName << std::endl;
 
-  ktMainForm mf{800,450}; //= new ktMainForm();
+  ktMainForm *mf= new ktMainForm(800,450); //= new ktMainForm();
   Fl_PNG_Image appIcon{icFileName.c_str()};
-  mf.icon(&appIcon);
+  mf->icon(&appIcon);
 
-  mf.show(argc, argv);
+  mf->show(argc, argv);
 
   return Fl::run();
 }
