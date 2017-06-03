@@ -30,10 +30,32 @@ ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
 
   end();
 
+  pnVideoImp= new ktPnVideoImp(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h());
+
   menuShow();
+  //~ printf("tl->children=%d\n",tl->children());
 };
 
 ktMainForm::~ktMainForm(){}
+
+int ktMainForm::handle(int e){
+    //~ if (e!=FL_MOVE) printf("ktMainForm - %s (%d)\n", fl_eventnames[e], e);
+    return Fl_Window::handle(e);
+}
+
+void ktMainForm::doPnVideoImp(){
+  if(!pnVideoImp) {return;}
+  tl->remove(2);
+  tl->add(pnVideoImp);
+  redraw();
+}
+
+void ktMainForm::doPnDefault(){
+  if(!pnWrk) {return;}
+  tl->remove(2);
+  tl->add(pnWrk);
+  redraw();
+}
 
 void ktMainForm::checkMenuOpen(){
   if (pnMenu->w() <= dx) {
@@ -52,7 +74,3 @@ void ktMainForm::menuShow(){
   }
 }
 
-int ktMainForm::handle(int e){
-    //~ if (e!=FL_MOVE) printf("ktMainForm - %s (%d)\n", fl_eventnames[e], e);
-    return Fl_Window::handle(e);
-}

@@ -12,6 +12,7 @@ set(CPPFILES
   ktPnBar.cpp
   ktPnMenu.cpp
   ktPnWrk.cpp
+  ktPnVideoImp.cpp
 )
 
 

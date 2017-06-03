@@ -1,5 +1,5 @@
-#ifndef KT_MAIN_FORM
-#define KT_MAIN_FORM
+#ifndef ktMainForm_h
+#define ktMainForm_h
 
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Tile.H>
@@ -8,6 +8,7 @@
 #include "ktPnBar.h"
 #include "ktPnMenu.h"
 #include "ktPnWrk.h"
+#include "ktPnVideoImp.h"
 
 class ktMainForm_Tile: public Fl_Tile{
 
@@ -19,21 +20,26 @@ public:
 class ktMainForm: public Fl_Window {
   int dx = 5, dy = dx; // border width of resizable() - see below
 
-  ktPnBar *pnBar;
+  ktPnBar *pnBar= NULL;
 
   ktMainForm_Tile *tl;
-  Fl_Box *r;
+  Fl_Box *r= NULL;
 
   int mn_w= 0, mn_h= 0;
-  ktPnMenu *pnMenu;
-  ktPnWrk *pnWrk;
+  ktPnMenu *pnMenu= NULL;
+  ktPnWrk *pnWrk= NULL;
+
+  ktPnVideoImp *pnVideoImp;
 
 public:
   ktMainForm(int sW,int sH);
   ~ktMainForm();
+  int handle(int e);
+
   void menuShow();
   void checkMenuOpen();
-  int handle(int e);
+  void doPnVideoImp();
+  void doPnDefault();
 };
 
 #endif

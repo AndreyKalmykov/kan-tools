@@ -1,5 +1,5 @@
-#ifndef KT_PANEL_BAR
-#define KT_PANEL_BAR
+#ifndef ktPnBar_h
+#define ktPnBar_h
 
 #include <FL/Fl_Group.H>
 //~ #include <FL/Fl_Toggle_Button.H>
