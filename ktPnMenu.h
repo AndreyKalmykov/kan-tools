@@ -26,7 +26,7 @@ public:
 class ktPnMenu: public Fl_Scroll {
   ktMainForm *mf;
   int dx= 10, dy= 10;
-  int mn_w=w()-2*dx, bt_h= 40;
+  int mn_w=w()-2*dx, bt_h= 30;
 
   MenuItems curr_item= IT_EMPTY;
 

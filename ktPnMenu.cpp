@@ -46,10 +46,13 @@ ktPnMenu::ktPnMenu(int sx,int sy,int sw,int sh,ktMainForm *o):Fl_Scroll(sx,sy,sw
     //~ grVideo->hide();
     bt4= new itButton(0,0,0,bt_h,"bt4",this);
     bt5= new itButton(0,0,0,bt_h,"bt5",this);
-    bt5->do_callback();
+
   mn->end();
   end();
 
+    itVideo->value(1);
+    //~ itImpVideo->value(1);
+    //~ itImpVideo->do_callback();
   //~ printf("when=%d\n",mn->when());
 
 };
@@ -78,34 +81,21 @@ void ktPnMenu::draw(){
   return Fl_Scroll::draw();
 }
 
-/*
-void ktPnMenu::itVideo_cb(Fl_Widget *b,void *f){
-  ktPnMenu *frm= (ktPnMenu *)f;
-  if(frm->itVideo->value() == 0) {frm->grVideo->hide();}
-  else {frm->grVideo->show();}
-
-  frm->redraw();
-  //~ frm->draw();
-
-  //~ frm->mf->doPnVideoImp();
-}
-*/
-
 void ktPnMenu::menu_cb(Fl_Widget *o){
   //~ Fl_Scroll *frm= (Fl_Scroll *)o;
   //~ printf("menu_cb grp=%s\n",grp->label());
   itButton *b= (itButton *)o;
 
-  printf("menu_cb b=%s\n",b->label());
+  //~ printf("menu_cb b=%s\n",b->label());
   MenuItems menu_it= IT_DEFAULT;
   if(b->mn->itVideo->value() != 0) {
     b->mn->grVideo->show();
-    printf("itImpVideo->value()=%d\n",b->mn->itImpVideo->value());
+    //~ printf("itImpVideo->value()=%d\n",b->mn->itImpVideo->value());
     if(b->mn->itImpVideo->value() != 0) {menu_it= b->mn->itImpVideo->it_name;}
   } else { b->mn->grVideo->hide();}
 
   b->mn->redraw();
-  printf("curr_it=%d menu_it=%d\n",b->mn->curr_item,menu_it);
+  //~ printf("curr_it=%d menu_it=%d\n",b->mn->curr_item,menu_it);
   if(menu_it != b->mn->curr_item){
     b->mn->curr_item= menu_it;
     switch(menu_it){

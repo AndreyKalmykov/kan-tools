@@ -20,7 +20,7 @@ ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
 
   pnBar= new ktPnBar(0,0,w(),30,this);
   tl= new ktMainForm_Tile(0,0+pnBar->h(),w(),h()-pnBar->h(),"tl");
-  mn_w= (int)(tl->w()*0.3), mn_h= tl->h();
+  mn_w= (int)(tl->w()*0.25), mn_h= tl->h();
   tl->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
     r= new Fl_Box(tl->x()+dx,tl->y()+dy,tl->w()-2*dx,tl->h()-2*dy,"rBox");
     tl->resizable(r);

@@ -13,6 +13,7 @@ ktPnBar::ktPnBar(int sx,int sy,int sw,int sh,ktMainForm *o): Fl_Group(sx,sy,sw,s
 
   btnMenu= new Fl_Light_Button(2,2,h()-4,h()-4,"");
     btnMenu->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE);
+    btnMenu->shortcut(FL_F+2);
     btnMenu->callback(btnMenu_cb,this);
     btnMenu->value(1);
 
