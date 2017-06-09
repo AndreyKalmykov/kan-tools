@@ -1,7 +1,3 @@
-#include <iostream>
-
-#include <FL/names.h>
-
 #include "ktMainForm.h"
 
 int ktMainForm_Tile::handle(int e){
@@ -13,10 +9,20 @@ int ktMainForm_Tile::handle(int e){
   return Fl_Tile::handle(e);
 };
 
-ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
+ktMainForm::ktMainForm(int sW,int sH,std::string app_dir):
+    Fl_Double_Window(sW,sH,"main form"){
   label("kan Tools");
   hotspot(0,0,0);
   resizable(this);
+
+  appDir= app_dir;
+  //~ printf("icon=%s\n",(appDir+fileIcon).c_str());
+
+  appIcon= new Fl_PNG_Image((appDir+f_mainIcon).c_str());
+  icon(appIcon);
+
+  refreshIcon= new Fl_PNG_Image((appDir+f_refreshIcon).c_str());
+  //~ refreshIcon->w(35); refreshIcon->h(35);
 
   pnBar= new ktPnBar(0,0,w(),30,this);
   tl= new ktMainForm_Tile(0,0+pnBar->h(),w(),h()-pnBar->h(),"tl");
@@ -30,7 +36,8 @@ ktMainForm::ktMainForm(int sW,int sH):Fl_Window(sW,sH,"main form"){
 
   end();
 
-  pnVideoImp= new ktPnVideoImp(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h());
+  pnVideoImp= new ktPnVideoImp(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h()
+                  ,this);
 
   menuShow();
   //~ printf("tl->children=%d\n",tl->children());

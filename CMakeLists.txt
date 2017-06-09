@@ -5,6 +5,7 @@ set(CMAKE_BUILD_TYPE Debug)
 #~ set(CMAKE_BUILD_TYPE Release)
 
 file(COPY kTools.png DESTINATION ${PROJECT_BINARY_DIR})
+file(COPY kTools-refresh.png DESTINATION ${PROJECT_BINARY_DIR})
 
 set(CPPFILES
   main.cpp

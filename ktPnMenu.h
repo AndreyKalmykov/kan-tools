@@ -1,8 +1,9 @@
 #ifndef ktPnMenu_h
 #define ktPnMenu_h
 
-//~ #include <string>
+#include <iostream>
 
+#include <FL/names.h>
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Pack.H>

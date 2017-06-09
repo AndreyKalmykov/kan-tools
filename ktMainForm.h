@@ -1,7 +1,14 @@
 #ifndef ktMainForm_h
 #define ktMainForm_h
 
-#include <FL/Fl_Window.H>
+#include <iostream>
+#include <string>
+#include <libgen.h>
+
+#include <FL/Fl.H>
+#include <FL/names.h>
+#include <FL/Fl_PNG_Image.H>
+#include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_Box.H>
 
@@ -17,8 +24,10 @@ public:
   ktMainForm_Tile(int X,int Y,int W,int H,const char *L=0):Fl_Tile(X,Y,W,H,L){};
 };
 
-class ktMainForm: public Fl_Window {
-  int dx = 5, dy = dx; // border width of resizable() - see below
+class ktMainForm: public Fl_Double_Window {
+  int dx= 5,dy= dx;
+  std::string f_mainIcon= "kTools.png";
+  std::string f_refreshIcon= "kTools-refresh.png";
 
   ktPnBar *pnBar= NULL;
 
@@ -32,7 +41,12 @@ class ktMainForm: public Fl_Window {
   ktPnVideoImp *pnVideoImp;
 
 public:
-  ktMainForm(int sW,int sH);
+  std::string appDir;
+  Fl_PNG_Image *appIcon;
+  Fl_PNG_Image *refreshIcon;
+
+
+  ktMainForm(int sW,int sH,std::string app_dir);
   ~ktMainForm();
   int handle(int e);
 

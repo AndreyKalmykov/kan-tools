@@ -1,6 +1,3 @@
-#include <iostream>
-#include <FL/names.h>
-
 #include "ktPnMenu.h"
 #include "ktMainForm.h"
 
