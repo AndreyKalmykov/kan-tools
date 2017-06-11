@@ -14,19 +14,22 @@
 
 class ktMainForm;
 
-enum TableCols {C_NPP=0,C_SRC,C_DST,C_END};
+enum TableCols {C_NPP=0,C_SRC,C_DST,C_OK,C_SIZE,C_DATE,C_END};
 
 class impRow {
 public:
   int npp= 0;
   std::string srcName;
   std::string dstName;
-  impRow(int n,std::string s,std::string d);
+  std::uintmax_t f_size;
+  std::time_t dt;
+  int ok;
+  impRow(int n,std::string s,std::string d,uintmax_t sz,time_t t,int dst_ok);
 };
 
 class impTable: public Fl_Table {
   std::vector<std::string> colNames={
-    "№","src name","dst name"
+    "№","src name","dst name","ok","size(Mb)","time"
   };
 public:
   std::vector<impRow> impRows;
@@ -61,6 +64,7 @@ public:
   static void choseSrcDir_cb(Fl_Widget *b,void *o);
   void setDstPath(const char *p);
   const char* getDstPath();
+  int checkDstFile(std::string f_name,std::uintmax_t f_size);
   static void choseDstDir_cb(Fl_Widget *b,void *o);
   static void tblRefresh_cb(Fl_Widget *b,void *o);
 };
