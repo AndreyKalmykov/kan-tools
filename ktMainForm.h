@@ -27,7 +27,7 @@ public:
 class ktMainForm: public Fl_Double_Window {
   int dx= 5,dy= dx;
   std::string f_mainIcon= "kTools.png";
-  std::string f_refreshIcon= "kTools-refresh.png";
+  std::string f_refreshIcon= "kt-refresh.png";
 
   ktPnBar *pnBar= NULL;
 

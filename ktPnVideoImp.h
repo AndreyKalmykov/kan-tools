@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include <boost/filesystem.hpp>
 
 #include <FL/Fl_Scroll.H>
@@ -49,7 +50,8 @@ class ktPnVideoImp: public Fl_Scroll {
   Fl_Image *refreshImg;
   Fl_Button *choseSrcDir;
   Fl_Button *choseDstDir;
-  Fl_Button *tblRefresh;
+  Fl_Button *btnTblRefresh;
+  Fl_Button *btnDoImport;
   impTable *impTbl;
 public:
   ktMainForm *mf;
@@ -66,7 +68,9 @@ public:
   const char* getDstPath();
   int checkDstFile(std::string f_name,std::uintmax_t f_size);
   static void choseDstDir_cb(Fl_Widget *b,void *o);
-  static void tblRefresh_cb(Fl_Widget *b,void *o);
+  static void btnTblRefresh_cb(Fl_Widget *b,void *o);
+  static void btnDoImport_cb(Fl_Widget *b,void *o);
+  void doImport();
 };
 
 #endif

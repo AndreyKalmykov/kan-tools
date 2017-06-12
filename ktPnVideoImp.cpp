@@ -90,6 +90,7 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
   int dx= 10,dy= 30;
   int txt_w= 300,txt_h= 30;
   int bt_dir_w= 30,bt_ref_w= 30,bt_ref_h= 30;
+  int bt_do_imp_w= 150,bt_do_imp_h= 30;
   refreshImg= mf->refreshIcon->copy(bt_ref_w-5,bt_ref_h-5);
 
   //~ int f_size= 15;
@@ -102,25 +103,25 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
 
   srcDir= new txtFI(sx+dx,sy+dy,txt_w,txt_h,"SRC");
     srcDir->align(FL_ALIGN_TOP);
-    //~ srcDir->textsize(f_size);
-    srcDir->value("/home/kan/wrk/kan-tools/box1");
+    //~ srcDir->value("/home/kan/wrk/kan-tools/box1");
   choseSrcDir= new Fl_Button(srcDir->x()+srcDir->w()+dx,sy+dy,bt_dir_w,txt_h);
     choseSrcDir->labelcolor(FL_YELLOW);
     ic_dir->label(choseSrcDir);
     choseSrcDir->callback(choseSrcDir_cb,this);
   dstDir= new txtFI(sx+dx+txt_w+dx+bt_dir_w+3*dx,sy+dy,txt_w,txt_h,"DST");
     dstDir->align(FL_ALIGN_TOP);
-    //~ dstDir->textsize(f_size);
-    dstDir->value("/home/kan/wrk/kan-tools/box2");
+    //~ dstDir->value("/home/kan/wrk/kan-tools/box2");
   choseDstDir= new Fl_Button(dstDir->x()+txt_w+dx,sy+dy,bt_dir_w,txt_h);
     choseDstDir->labelcolor(FL_YELLOW);
     ic_dir->label(choseDstDir);
-    //~ choseDstDir->callback(choseDstDir_cb,this);
-  tblRefresh= new Fl_Button(sx+dx,srcDir->y()+txt_h+1*dy,bt_ref_w,txt_h);
-    tblRefresh->labelcolor(FL_YELLOW);
-    tblRefresh->image(refreshImg);
-    tblRefresh->callback(tblRefresh_cb,this);
-  impTbl= new impTable(sx+dx,tblRefresh->y()+tblRefresh->h(),sw-2*dx,sh-2*dy-txt_h-2*dy,"Выполняем импорт");
+    choseDstDir->callback(choseDstDir_cb,this);
+  btnTblRefresh= new Fl_Button(sx+dx,srcDir->y()+txt_h+1*dy,bt_ref_w,bt_ref_h);
+    btnTblRefresh->labelcolor(FL_YELLOW);
+    btnTblRefresh->image(refreshImg);
+    btnTblRefresh->callback(btnTblRefresh_cb,this);
+  btnDoImport= new Fl_Button(sx+sw-dx-bt_do_imp_w,srcDir->y()+txt_h+1*dy,bt_do_imp_w,bt_do_imp_h,"Выполнить импорт");
+    btnDoImport->callback(btnDoImport_cb,this);
+  impTbl= new impTable(sx+dx,btnTblRefresh->y()+btnTblRefresh->h(),sw-2*dx,sh-2*dy-txt_h-2*dy,"Список для импорта");
     impTbl->cols(C_END); impTbl->col_header(1); impTbl->col_resize(1); impTbl->col_header_height(txt_h);
     impTbl->row_header(1); impTbl->row_resize(0); impTbl->row_header_width(txt_h/2);
     impTbl->col_width(C_NPP,20);
@@ -132,9 +133,43 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
   end();
 }
 
-void ktPnVideoImp::tblRefresh_cb(Fl_Widget *b,void *o){
+void ktPnVideoImp::btnTblRefresh_cb(Fl_Widget *b,void *o){
   ktPnVideoImp *frm= (ktPnVideoImp *)o;
   frm->loadDir();
+}
+
+void ktPnVideoImp::btnDoImport_cb(Fl_Widget *b,void *o){
+  ktPnVideoImp *frm= (ktPnVideoImp *)o;
+  frm->doImport();
+}
+
+void ktPnVideoImp::doImport(){
+  static char s[40];
+  const std::time_t ct= std::time(0);
+  for(size_t i= 0; i<impTbl->impRows.size();i++){
+    if(impTbl->impRows[i].ok) continue;
+    std::string src_name= impTbl->impRows[i].srcName;
+    std::string dst_name= impTbl->impRows[i].dstName;
+    std::uintmax_t src_size= impTbl->impRows[i].f_size;
+    std::time_t src_dt= impTbl->impRows[i].dt;
+    strftime(s,21,"/%y%m%e-%H%M",localtime(&ct));
+    std::string ln_dir= path(dst_name).remove_filename().string()+s;
+    std::string ln_name= ln_dir+"/"+path(dst_name).filename().string();
+    std::string f_link= "../"+path(dst_name).filename().string();
+    //~ printf("%s<>%s\n",f_link.c_str(),ln_name.c_str());
+    if(!exists(path(dst_name).remove_filename())){
+      printf("Ошибка!!! рет такого: dir=<%s>\n",path(dst_name).remove_filename().c_str());
+      break;
+    }
+    if(!exists(ln_dir)) create_directory(ln_dir);
+    printf("%s -> %s\n",src_name.c_str(),dst_name.c_str());
+    copy_file(path(src_name),path(dst_name),copy_option::overwrite_if_exists);
+    last_write_time(dst_name,src_dt);
+    permissions(dst_name, remove_perms|owner_exe|group_exe|others_exe);
+    impTbl->impRows[i].ok= checkDstFile(dst_name,src_size);
+    create_symlink(f_link,ln_name);
+    impTbl->redraw();
+  }
 }
 
 int ktPnVideoImp::checkDstFile(std::string f_name,std::uintmax_t f_size){
