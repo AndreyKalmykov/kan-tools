@@ -10,6 +10,7 @@
 #include <FL/Fl_File_Input.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Table.H>
+#include <FL/Fl_Progress.H>
 #include <FL/names.h>
 #include <FL/fl_draw.H>
 
@@ -60,6 +61,7 @@ public:
 
   ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o);
   ~ktPnVideoImp(){};
+  int getNumsImp();
   void loadDir();
   void setSrcPath(const char *p);
   const char* getSrcPath();

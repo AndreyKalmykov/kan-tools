@@ -41,7 +41,7 @@ void impTable::draw_cell(TableContext context,int R,int C,int X,int Y,int W,int 
     case CONTEXT_CELL:                  // Fl_Table telling us to draw cells
       fl_push_clip(X,Y,W,H);
       // BG COLOR
-      fl_color(is_selected(R,C) ? selection_color() : FL_WHITE);
+      fl_color(is_selected(R,C) ? selection_color() : (impRows[R].ok ? FL_WHITE:FL_YELLOW));
       fl_rectf(X,Y,W,H);
 
       // TEXT
@@ -121,7 +121,7 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     btnTblRefresh->callback(btnTblRefresh_cb,this);
   btnDoImport= new Fl_Button(sx+sw-dx-bt_do_imp_w,srcDir->y()+txt_h+1*dy,bt_do_imp_w,bt_do_imp_h,"Выполнить импорт");
     btnDoImport->callback(btnDoImport_cb,this);
-  impTbl= new impTable(sx+dx,btnTblRefresh->y()+btnTblRefresh->h(),sw-2*dx,sh-2*dy-txt_h-2*dy,"Список для импорта");
+  impTbl= new impTable(sx+dx,btnTblRefresh->y()+btnTblRefresh->h(),sw-2*dx,sh-2*dy-txt_h-3*dy,"Список для импорта");
     impTbl->cols(C_END); impTbl->col_header(1); impTbl->col_resize(1); impTbl->col_header_height(txt_h);
     impTbl->row_header(1); impTbl->row_resize(0); impTbl->row_header_width(txt_h/2);
     impTbl->col_width(C_NPP,20);
@@ -139,15 +139,44 @@ void ktPnVideoImp::btnTblRefresh_cb(Fl_Widget *b,void *o){
 }
 
 void ktPnVideoImp::btnDoImport_cb(Fl_Widget *b,void *o){
+  b->deactivate();                        // prevent button from being pressed again
+  Fl::check();                               // give fltk some cpu to gray out button
   ktPnVideoImp *frm= (ktPnVideoImp *)o;
   frm->doImport();
+  b->activate();                          // reactivate button
+  frm->redraw();                               // tell window to redraw now that progress removed
+}
+
+int ktPnVideoImp::getNumsImp(){
+  int f_num= 0;
+  for(size_t i= 0; i<impTbl->impRows.size();i++){
+    if(impTbl->impRows[i].ok != 0) continue;
+    f_num++;
+  }
+  return f_num;
 }
 
 void ktPnVideoImp::doImport(){
   static char s[40];
   const std::time_t ct= std::time(0);
-  for(size_t i= 0; i<impTbl->impRows.size();i++){
-    if(impTbl->impRows[i].ok) continue;
+  int r1,r2,c1,c2;
+  int f_nums= getNumsImp(),cf_num= 0;
+  int prg_h= 30;
+    begin();                                // add progress bar to it..
+    Fl_Progress *progress = new Fl_Progress(impTbl->x(),impTbl->y()+impTbl->h(),impTbl->w(),prg_h);
+    progress->minimum(0);                      // set progress range to be 0.0 ~ 1.0
+    progress->maximum(f_nums);
+    progress->color(0x88888800);               // background color
+    progress->selection_color(0x4444ff00);     // progress bar color
+    progress->labelcolor(FL_WHITE);            // percent text color
+    end();                                  // end adding to window
+
+  for(int i= 0; i<(int)impTbl->impRows.size();i++){
+    if(impTbl->impRows[i].ok != 0) continue;
+    impTbl->visible_cells(r1,r2,c1,c2);
+    if(i<r1+3 || i>r2-3){
+      impTbl->top_row(i-2>=0?i-2:0);
+    }
     std::string src_name= impTbl->impRows[i].srcName;
     std::string dst_name= impTbl->impRows[i].dstName;
     std::uintmax_t src_size= impTbl->impRows[i].f_size;
@@ -163,19 +192,30 @@ void ktPnVideoImp::doImport(){
     }
     if(!exists(ln_dir)) create_directory(ln_dir);
     printf("%s -> %s\n",src_name.c_str(),dst_name.c_str());
+
+        progress->value(++cf_num);              // update progress bar with 0.0 ~ 1.0 value
+        progress->label((std::to_string(cf_num)+"/"+std::to_string(f_nums)).c_str());              // update progress bar's label
+        Fl::check();                           // give fltk some cpu to update the screen
+
     copy_file(path(src_name),path(dst_name),copy_option::overwrite_if_exists);
     last_write_time(dst_name,src_dt);
     permissions(dst_name, remove_perms|owner_exe|group_exe|others_exe);
     impTbl->impRows[i].ok= checkDstFile(dst_name,src_size);
     create_symlink(f_link,ln_name);
     impTbl->redraw();
+    Fl::check();
   }
+    remove(progress);                       // remove progress bar from window
+    delete(progress);                          // deallocate it
+    redraw();                               // tell window to redraw now that progress removed
+
 }
 
 int ktPnVideoImp::checkDstFile(std::string f_name,std::uintmax_t f_size){
   int rc= 0;
   if(exists(f_name)) {
-    rc= 1;
+    if(file_size(f_name)==f_size)
+      rc= 1;
   }
   return rc;
 }
