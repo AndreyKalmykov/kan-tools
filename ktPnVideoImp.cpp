@@ -87,13 +87,15 @@ txtFI::txtFI(int X,int Y,int W,int H,const char *L):Fl_File_Input(X,Y,W,H,L){}
 ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     Fl_Scroll(sx,sy,sw,sh,"ktPnVideoImp") {
   mf= o;
+  viPref= new Fl_Preferences(mf->appPref,"VideoImport");
+
+  int buf_size= 1000; char c_buf[buf_size];
+
   int dx= 10,dy= 30;
   int txt_w= 300,txt_h= 30;
   int bt_dir_w= 30,bt_ref_w= 30,bt_ref_h= 30;
   int bt_do_imp_w= 150,bt_do_imp_h= 30;
   refreshImg= mf->refreshIcon->copy(bt_ref_w-5,bt_ref_h-5);
-
-  //~ int f_size= 15;
 
   resizable(NULL);
   box(FL_DOWN_BOX);
@@ -103,14 +105,16 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
 
   srcDir= new txtFI(sx+dx,sy+dy,txt_w,txt_h,"SRC");
     srcDir->align(FL_ALIGN_TOP);
-    //~ srcDir->value("/home/kan/wrk/kan-tools/box1");
+    viPref->get("srcPath",c_buf,"",buf_size);
+    srcDir->value(c_buf);
   choseSrcDir= new Fl_Button(srcDir->x()+srcDir->w()+dx,sy+dy,bt_dir_w,txt_h);
     choseSrcDir->labelcolor(FL_YELLOW);
     ic_dir->label(choseSrcDir);
     choseSrcDir->callback(choseSrcDir_cb,this);
   dstDir= new txtFI(sx+dx+txt_w+dx+bt_dir_w+3*dx,sy+dy,txt_w,txt_h,"DST");
     dstDir->align(FL_ALIGN_TOP);
-    //~ dstDir->value("/home/kan/wrk/kan-tools/box2");
+    viPref->get("dstPath",c_buf,"",buf_size);
+    dstDir->value(c_buf);
   choseDstDir= new Fl_Button(dstDir->x()+txt_w+dx,sy+dy,bt_dir_w,txt_h);
     choseDstDir->labelcolor(FL_YELLOW);
     ic_dir->label(choseDstDir);
@@ -131,6 +135,7 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     impTbl->col_width(C_DATE,200);
 
   end();
+
 }
 
 void ktPnVideoImp::btnTblRefresh_cb(Fl_Widget *b,void *o){
@@ -147,6 +152,10 @@ void ktPnVideoImp::btnDoImport_cb(Fl_Widget *b,void *o){
   frm->redraw();                               // tell window to redraw now that progress removed
 }
 
+void ktPnVideoImp::savePref(){
+  viPref->set("srcPath",getSrcPath());
+  viPref->set("dstPath",getDstPath());
+}
 int ktPnVideoImp::getNumsImp(){
   int f_num= 0;
   for(size_t i= 0; i<impTbl->impRows.size();i++){

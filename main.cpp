@@ -12,6 +12,7 @@ int main(int argc, char **argv) {
   //~ mf->icon(&appIcon);
 
   mf->show(argc, argv);
-
-  return Fl::run();
+  int rc= Fl::run();
+  delete(mf);
+  return rc;
 }

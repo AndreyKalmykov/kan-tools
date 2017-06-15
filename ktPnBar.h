@@ -12,7 +12,7 @@ class ktPnBar: public Fl_Group {
   Fl_Light_Button *btnMenu;
 public:
   ktPnBar(int sx,int sy,int sw,int sh,ktMainForm *o);
-  ~ktPnBar();
+  //~ ~ktPnBar();
   static void btnMenu_cb(Fl_Widget *butt,void *o);
   int get_btnMenuState();
   void set_btnMenuState(int s);

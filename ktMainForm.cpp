@@ -11,18 +11,21 @@ int ktMainForm_Tile::handle(int e){
 
 ktMainForm::ktMainForm(int sW,int sH,std::string app_dir):
     Fl_Double_Window(sW,sH,"main form"){
-  label("kan Tools");
-  hotspot(0,0,0);
-  resizable(this);
-
+  int buf_size= 1000; char c_buf[buf_size];
   appDir= app_dir;
-  //~ printf("icon=%s\n",(appDir+fileIcon).c_str());
+  appPref= new Fl_Preferences(appDir.c_str(),"kan.home","kTools");
 
   appIcon= new Fl_PNG_Image((appDir+f_mainIcon).c_str());
   icon(appIcon);
-
   refreshIcon= new Fl_PNG_Image((appDir+f_refreshIcon).c_str());
   //~ refreshIcon->w(35); refreshIcon->h(35);
+  appPref->get("appTitle",c_buf,appTitle.c_str(),buf_size);
+  //~ appTitle= std::string(c_buf);
+  appTitle= c_buf;
+  label(appTitle.c_str());
+  hotspot(0,0,0);
+  resizable(this);
+  callback(mainForm_cb);
 
   pnBar= new ktPnBar(0,0,w(),30,this);
   tl= new ktMainForm_Tile(0,0+pnBar->h(),w(),h()-pnBar->h(),"tl");
@@ -43,11 +46,29 @@ ktMainForm::ktMainForm(int sW,int sH,std::string app_dir):
   //~ printf("tl->children=%d\n",tl->children());
 };
 
-ktMainForm::~ktMainForm(){}
+//~ ktMainForm::~ktMainForm(){}
 
 int ktMainForm::handle(int e){
     //~ if (e!=FL_MOVE) printf("ktMainForm - %s (%d)\n", fl_eventnames[e], e);
-    return Fl_Window::handle(e);
+
+  return Fl_Window::handle(e);
+}
+
+void ktMainForm::mainForm_cb(Fl_Widget *o){
+  ktMainForm *mf= (ktMainForm *)o;
+  mf->savePref();
+  //~ printf("mf_cb label=%s\n",mf->label());
+  switch(fl_choice("Are you sure you want to quit?","Yes","No",0)){
+  case 0: exit(0); break;
+  case 1: return; break;
+  }
+}
+
+void ktMainForm::savePref(){
+  appPref->set("appTitle",appTitle.c_str());
+  if(pnVideoImp){pnVideoImp->savePref();}
+  appPref->flush();
+  printf("savePref\n");
 }
 
 void ktMainForm::doPnVideoImp(){

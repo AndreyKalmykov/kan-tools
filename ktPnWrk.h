@@ -11,7 +11,7 @@ class ktPnWrk: public Fl_Group {
   Fl_Clock *cl;
 public:
   ktPnWrk(int sx,int sy,int sw,int sh);
-  ~ktPnWrk();
+  //~ ~ktPnWrk();
 };
 
 #endif

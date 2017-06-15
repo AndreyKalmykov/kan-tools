@@ -6,11 +6,12 @@
 #include <libgen.h>
 
 #include <FL/Fl.H>
-#include <FL/names.h>
+#include <FL/Fl_Preferences.H>
 #include <FL/Fl_PNG_Image.H>
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_Box.H>
+#include <FL/names.h>
 
 #include "ktPnBar.h"
 #include "ktPnMenu.h"
@@ -42,14 +43,19 @@ class ktMainForm: public Fl_Double_Window {
 
 public:
   std::string appDir;
+  std::string appTitle= "kan Tools";
+
+  Fl_Preferences *appPref;
   Fl_PNG_Image *appIcon;
   Fl_PNG_Image *refreshIcon;
 
 
   ktMainForm(int sW,int sH,std::string app_dir);
-  ~ktMainForm();
+  //~ ~ktMainForm();
   int handle(int e);
 
+  static void mainForm_cb(Fl_Widget *o);
+  void savePref();
   void menuShow();
   void checkMenuOpen();
   void doPnVideoImp();

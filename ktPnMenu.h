@@ -46,7 +46,7 @@ class ktPnMenu: public Fl_Scroll {
 
 public:
   ktPnMenu(int sx,int sy,int sw, int sh, ktMainForm *o);
-  ~ktPnMenu(){};
+  //~ ~ktPnMenu(){printf("~ktPnMenu\n");};
   int handle(int e);
   void resize(int X, int Y, int W, int H);
   void draw();

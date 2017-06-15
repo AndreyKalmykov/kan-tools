@@ -19,7 +19,7 @@ ktPnBar::ktPnBar(int sx,int sy,int sw,int sh,ktMainForm *o): Fl_Group(sx,sy,sw,s
 
   end();
 };
-ktPnBar::~ktPnBar(){};
+//~ ktPnBar::~ktPnBar(){};
 
 void ktPnBar::btnMenu_cb(Fl_Widget *butt,void *o){
   ktPnBar *frm= (ktPnBar *)o;

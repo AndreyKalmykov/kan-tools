@@ -12,4 +12,4 @@ ktPnWrk::ktPnWrk(int sx,int sy,int sw,int sh): Fl_Group(sx,sy,sw,sh,"ktPnWrk") {
   end();
 }
 
-ktPnWrk::~ktPnWrk(){}
+//~ ktPnWrk::~ktPnWrk(){}

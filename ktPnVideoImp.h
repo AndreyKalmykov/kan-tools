@@ -6,11 +6,14 @@
 #include <ctime>
 #include <boost/filesystem.hpp>
 
+#include <FL/Fl.H>
+#include <FL/Fl_Preferences.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Input.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_Table.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Preferences.H>
 #include <FL/names.h>
 #include <FL/fl_draw.H>
 
@@ -36,7 +39,7 @@ class impTable: public Fl_Table {
 public:
   std::vector<impRow> impRows;
   impTable(int X, int Y, int W, int H, const char *l=0);
-  ~impTable(){};
+  //~ ~impTable(){};
   void draw_cell(TableContext context,int R=0,int C=0,int X=0,int Y=0,int W=0,int H=0);
 
 };
@@ -44,7 +47,7 @@ public:
 class txtFI: public Fl_File_Input {
 public:
   txtFI(int X,	int Y,int W,int H,const char *L= 0);
-  ~txtFI(){};
+  //~ ~txtFI(){};
 };
 
 class ktPnVideoImp: public Fl_Scroll {
@@ -56,11 +59,13 @@ class ktPnVideoImp: public Fl_Scroll {
   impTable *impTbl;
 public:
   ktMainForm *mf;
+  Fl_Preferences *viPref;
   txtFI *srcDir;
   txtFI *dstDir;
 
   ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o);
-  ~ktPnVideoImp(){};
+  //~ ~ktPnVideoImp(){};
+  void savePref();
   int getNumsImp();
   void loadDir();
   void setSrcPath(const char *p);
