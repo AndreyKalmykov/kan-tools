@@ -11,6 +11,7 @@
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Tile.H>
 #include <FL/Fl_Box.H>
+#include <FL/Fl_Native_File_Chooser.H>
 #include <FL/names.h>
 
 #include "ktPnBar.h"
@@ -58,6 +59,7 @@ public:
   void savePref();
   void menuShow();
   void checkMenuOpen();
+  std::string dirChooser(std::string txt,std::string dir);
   void doPnVideoImp();
   void doPnDefault();
 };

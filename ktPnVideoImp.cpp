@@ -107,18 +107,18 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     srcDir->align(FL_ALIGN_TOP);
     viPref->get("srcPath",c_buf,"",buf_size);
     srcDir->value(c_buf);
-  choseSrcDir= new Fl_Button(srcDir->x()+srcDir->w()+dx,sy+dy,bt_dir_w,txt_h);
-    choseSrcDir->labelcolor(FL_YELLOW);
-    ic_dir->label(choseSrcDir);
-    choseSrcDir->callback(choseSrcDir_cb,this);
+  btnSelSrcDir= new Fl_Button(srcDir->x()+srcDir->w()+dx,sy+dy,bt_dir_w,txt_h);
+    btnSelSrcDir->labelcolor(FL_YELLOW);
+    ic_dir->label(btnSelSrcDir);
+    btnSelSrcDir->callback(btnSelSrcDir_cb,this);
   dstDir= new txtFI(sx+dx+txt_w+dx+bt_dir_w+3*dx,sy+dy,txt_w,txt_h,"DST");
     dstDir->align(FL_ALIGN_TOP);
     viPref->get("dstPath",c_buf,"",buf_size);
     dstDir->value(c_buf);
-  choseDstDir= new Fl_Button(dstDir->x()+txt_w+dx,sy+dy,bt_dir_w,txt_h);
-    choseDstDir->labelcolor(FL_YELLOW);
-    ic_dir->label(choseDstDir);
-    choseDstDir->callback(choseDstDir_cb,this);
+  btnSelDstDir= new Fl_Button(dstDir->x()+txt_w+dx,sy+dy,bt_dir_w,txt_h);
+    btnSelDstDir->labelcolor(FL_YELLOW);
+    ic_dir->label(btnSelDstDir);
+    btnSelDstDir->callback(btnSelDstDir_cb,this);
   btnTblRefresh= new Fl_Button(sx+dx,srcDir->y()+txt_h+1*dy,bt_ref_w,bt_ref_h);
     btnTblRefresh->labelcolor(FL_YELLOW);
     btnTblRefresh->image(refreshImg);
@@ -153,8 +153,8 @@ void ktPnVideoImp::btnDoImport_cb(Fl_Widget *b,void *o){
 }
 
 void ktPnVideoImp::savePref(){
-  viPref->set("srcPath",getSrcPath());
-  viPref->set("dstPath",getDstPath());
+  viPref->set("srcPath",getSrcPath().c_str());
+  viPref->set("dstPath",getDstPath().c_str());
 }
 int ktPnVideoImp::getNumsImp(){
   int f_num= 0;
@@ -291,36 +291,32 @@ void ktPnVideoImp::loadDir(){
 //*/
 }
 
-void ktPnVideoImp::setSrcPath(const char *p){
-  srcDir->value(p);
+void ktPnVideoImp::setSrcPath(std::string str){
+  srcDir->value(str.c_str());
 }
 
-void ktPnVideoImp::setDstPath(const char *p){
-  dstDir->value(p);
+void ktPnVideoImp::setDstPath(std::string str){
+  dstDir->value(str.c_str());
 }
 
-const char* ktPnVideoImp::getSrcPath(){
-  return srcDir->value();
+std::string ktPnVideoImp::getSrcPath(){
+  return std::string(srcDir->value());
 }
 
-const char* ktPnVideoImp::getDstPath(){
-  return dstDir->value();
+std::string ktPnVideoImp::getDstPath(){
+  return std::string(dstDir->value());
 }
 
-void ktPnVideoImp::choseSrcDir_cb(Fl_Widget *b,void *o){
+void ktPnVideoImp::btnSelSrcDir_cb(Fl_Widget *b,void *o){
   ktPnVideoImp *frm= (ktPnVideoImp *)o;
-  const char *p= frm->getSrcPath();
-  char *d= fl_dir_chooser("src dir",p,0);
-  if(d){
-    frm->setSrcPath(d);
-  }
+  std::string p= frm->getSrcPath();
+  std::string d= frm->mf->dirChooser(std::string("src dir"),p);
+  if(!d.empty()) frm->setSrcPath(d.c_str());
 }
 
-void ktPnVideoImp::choseDstDir_cb(Fl_Widget *b,void *o){
+void ktPnVideoImp::btnSelDstDir_cb(Fl_Widget *b,void *o){
   ktPnVideoImp *frm= (ktPnVideoImp *)o;
-  const char *p= frm->getDstPath();
-  char *d= fl_dir_chooser("dst dir",p,0);
-  if(d){
-    frm->setDstPath(d);
-  }
+  std::string p= frm->getDstPath();
+  std::string d= frm->mf->dirChooser(std::string("dst dir"),p);
+  if(!d.empty()) frm->setDstPath(d.c_str());
 }

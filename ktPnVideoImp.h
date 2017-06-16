@@ -10,7 +10,10 @@
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Input.H>
-#include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Button.H>
+
+//~ #include <FL/Fl_File_Chooser.H>
+//~ #include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Table.H>
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Preferences.H>
@@ -52,8 +55,8 @@ public:
 
 class ktPnVideoImp: public Fl_Scroll {
   Fl_Image *refreshImg;
-  Fl_Button *choseSrcDir;
-  Fl_Button *choseDstDir;
+  Fl_Button *btnSelSrcDir;
+  Fl_Button *btnSelDstDir;
   Fl_Button *btnTblRefresh;
   Fl_Button *btnDoImport;
   impTable *impTbl;
@@ -68,13 +71,13 @@ public:
   void savePref();
   int getNumsImp();
   void loadDir();
-  void setSrcPath(const char *p);
-  const char* getSrcPath();
-  static void choseSrcDir_cb(Fl_Widget *b,void *o);
-  void setDstPath(const char *p);
-  const char* getDstPath();
+  void setSrcPath(std::string str);
+  std::string getSrcPath();
+  static void btnSelSrcDir_cb(Fl_Widget *b,void *o);
+  void setDstPath(std::string str);
+  std::string getDstPath();
   int checkDstFile(std::string f_name,std::uintmax_t f_size);
-  static void choseDstDir_cb(Fl_Widget *b,void *o);
+  static void btnSelDstDir_cb(Fl_Widget *b,void *o);
   static void btnTblRefresh_cb(Fl_Widget *b,void *o);
   static void btnDoImport_cb(Fl_Widget *b,void *o);
   void doImport();

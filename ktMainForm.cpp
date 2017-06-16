@@ -64,6 +64,23 @@ void ktMainForm::mainForm_cb(Fl_Widget *o){
   }
 }
 
+std::string ktMainForm::dirChooser(std::string txt,std::string dir){
+  std::string rc= "";
+  Fl_Native_File_Chooser fch;
+  fch.title(txt.c_str());
+  fch.directory(dir.c_str());
+  fch.type(Fl_Native_File_Chooser::BROWSE_DIRECTORY);
+  // Show
+  switch (fch.show()) {
+    case -1: fprintf(stderr, "ERROR: %s\n", fch.errmsg()); break;	// ERROR
+    case  1: break;		// CANCEL
+    default: 								// PICKED DIR
+      if (fch.filename()) {rc= fch.filename();}
+      break;
+  }
+  return rc;
+}
+
 void ktMainForm::savePref(){
   appPref->set("appTitle",appTitle.c_str());
   if(pnVideoImp){pnVideoImp->savePref();}
