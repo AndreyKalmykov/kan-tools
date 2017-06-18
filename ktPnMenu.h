@@ -12,7 +12,7 @@
 
 class ktMainForm;
 class ktPnMenu;
-enum MenuItems {IT_EMPTY=0,IT_DEFAULT,IT_VIDEOIMP};
+enum MenuItems {IT_EMPTY=0,IT_DEFAULT,IT_VIDEOIMP,IT_VIDEOPROXY};
 
 class itButton: public Fl_Radio_Light_Button {
 public:
@@ -41,16 +41,12 @@ class ktPnMenu: public Fl_Scroll {
   Fl_Group *grVideo;
   Fl_Pack *mnVideo;
   itButton *itImpVideo;
-  itButton *bt32;
+  itButton *itProxyVideo;
   itButton *bt33;
 
 public:
   ktPnMenu(int sx,int sy,int sw, int sh, ktMainForm *o);
-  //~ ~ktPnMenu(){printf("~ktPnMenu\n");};
-  int handle(int e);
   void resize(int X, int Y, int W, int H);
-  void draw();
-  //~ static void itVideo_cb(Fl_Widget *b, void *f);
   static void menu_cb(Fl_Widget *o);
 };
 

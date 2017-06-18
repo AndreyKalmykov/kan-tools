@@ -39,8 +39,8 @@ ktMainForm::ktMainForm(int sW,int sH,std::string app_dir):
 
   end();
 
-  pnVideoImp= new ktPnVideoImp(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h()
-                  ,this);
+  pnVideoImp= new ktPnVideoImp(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h(),this);
+  pnVideoProxy= new ktPnVideoProxy(tl->x()+pnMenu->w(),tl->y(),tl->w()-pnMenu->w(),tl->h(),this);
 
   menuShow();
   //~ printf("tl->children=%d\n",tl->children());
@@ -92,6 +92,13 @@ void ktMainForm::doPnVideoImp(){
   if(!pnVideoImp) {return;}
   tl->remove(2);
   tl->add(pnVideoImp);
+  redraw();
+}
+
+void ktMainForm::doPnVideoProxy(){
+  if(!pnVideoProxy) {return;}
+  tl->remove(2);
+  tl->add(pnVideoProxy);
   redraw();
 }
 

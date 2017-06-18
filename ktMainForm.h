@@ -18,6 +18,7 @@
 #include "ktPnMenu.h"
 #include "ktPnWrk.h"
 #include "ktPnVideoImp.h"
+#include "ktPnVideoProxy.h"
 
 class ktMainForm_Tile: public Fl_Tile{
 
@@ -41,6 +42,7 @@ class ktMainForm: public Fl_Double_Window {
   ktPnWrk *pnWrk= NULL;
 
   ktPnVideoImp *pnVideoImp;
+  ktPnVideoProxy *pnVideoProxy;
 
 public:
   std::string appDir;
@@ -49,7 +51,6 @@ public:
   Fl_Preferences *appPref;
   Fl_PNG_Image *appIcon;
   Fl_PNG_Image *refreshIcon;
-
 
   ktMainForm(int sW,int sH,std::string app_dir);
   //~ ~ktMainForm();
@@ -61,6 +62,7 @@ public:
   void checkMenuOpen();
   std::string dirChooser(std::string txt,std::string dir);
   void doPnVideoImp();
+  void doPnVideoProxy();
   void doPnDefault();
 };
 

@@ -11,9 +11,6 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_File_Input.H>
 #include <FL/Fl_Button.H>
-
-//~ #include <FL/Fl_File_Chooser.H>
-//~ #include <FL/Fl_Native_File_Chooser.H>
 #include <FL/Fl_Table.H>
 #include <FL/Fl_Progress.H>
 #include <FL/Fl_Preferences.H>
@@ -22,7 +19,7 @@
 
 class ktMainForm;
 
-enum TableCols {C_NPP=0,C_SRC,C_DST,C_OK,C_SIZE,C_DATE,C_END};
+enum impTableCols {C_IMP_NPP=0,C_IMP_SRC,C_IMP_DST,C_IMP_OK,C_IMP_SIZE,C_IMP_DATE,C_IMP_END};
 
 class impRow {
 public:
@@ -47,12 +44,6 @@ public:
 
 };
 
-class txtFI: public Fl_File_Input {
-public:
-  txtFI(int X,	int Y,int W,int H,const char *L= 0);
-  //~ ~txtFI(){};
-};
-
 class ktPnVideoImp: public Fl_Scroll {
   Fl_Image *refreshImg;
   Fl_Button *btnSelSrcDir;
@@ -60,11 +51,11 @@ class ktPnVideoImp: public Fl_Scroll {
   Fl_Button *btnTblRefresh;
   Fl_Button *btnDoImport;
   impTable *impTbl;
+  Fl_File_Input *srcDir;
+  Fl_File_Input *dstDir;
+  Fl_Preferences *viPref;
 public:
   ktMainForm *mf;
-  Fl_Preferences *viPref;
-  txtFI *srcDir;
-  txtFI *dstDir;
 
   ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o);
   //~ ~ktPnVideoImp(){};

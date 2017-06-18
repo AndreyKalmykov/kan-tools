@@ -18,7 +18,6 @@ impTable::impTable(int X,int Y,int W,int H,const char *l) : Fl_Table(X,Y,W,H,l) 
 
 void impTable::draw_cell(TableContext context,int R,int C,int X,int Y,int W,int H) {
     static char s[40];
-    //~ sprintf(s, "%d/%d", R, C);              // text for each cell
     switch (context) {
     case CONTEXT_STARTPAGE:             // Fl_Table telling us it's starting to draw page
       fl_font(FL_HELVETICA,16);
@@ -27,14 +26,13 @@ void impTable::draw_cell(TableContext context,int R,int C,int X,int Y,int W,int 
       fl_push_clip(X,Y,W,H);
       fl_draw_box(FL_THIN_UP_BOX,X,Y,W,H,color());
       fl_color(FL_BLACK);
-      //~ fl_draw(colNames[C].c_str(),X, Y, W, H, FL_ALIGN_CENTER);
       fl_pop_clip();
       break;
     case CONTEXT_COL_HEADER:
       fl_push_clip(X,Y,W,H);
       fl_draw_box(FL_THIN_UP_BOX,X,Y,W,H,color());
       fl_color(FL_BLACK);
-      fl_draw(colNames[C].c_str(),X, Y, W, H, FL_ALIGN_CENTER);
+      fl_draw(colNames[C].c_str(),X,Y,W,H,FL_ALIGN_CENTER);
       fl_pop_clip();
       return;
 
@@ -47,42 +45,40 @@ void impTable::draw_cell(TableContext context,int R,int C,int X,int Y,int W,int 
       // TEXT
       fl_color(FL_BLACK);
       switch(C){
-      case C_NPP:
-        fl_draw(std::to_string(impRows[R].npp).c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+      case C_IMP_NPP:
+        fl_draw(std::to_string(impRows[R].npp).c_str(),X,Y,W,H,FL_ALIGN_CENTER);
         break;
-      case C_SRC:
-        fl_draw(path(impRows[R].srcName).filename().c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+      case C_IMP_SRC:
+        fl_draw(path(impRows[R].srcName).filename().c_str(),X,Y,W,H,FL_ALIGN_CENTER);
         break;
-      case C_DST:
-        fl_draw(path(impRows[R].dstName).filename().c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+      case C_IMP_DST:
+        fl_draw(path(impRows[R].dstName).filename().c_str(),X,Y,W,H,FL_ALIGN_CENTER);
         break;
-      case C_SIZE:
+      case C_IMP_SIZE:
         sprintf(s,"%6.2f",impRows[R].f_size/1024.0/1024.0);
-        fl_draw(s, X, Y, W, H, FL_ALIGN_CENTER);
+        fl_draw(s,X,Y,W,H,FL_ALIGN_CENTER);
         break;
-      case C_DATE:
+      case C_IMP_DATE:
         strftime(s,40,"%y%m%e %T",localtime(&impRows[R].dt));
-        fl_draw(s, X, Y, W, H, FL_ALIGN_CENTER);
+        fl_draw(s,X,Y,W,H,FL_ALIGN_CENTER);
         break;
-      case C_OK:
+      case C_IMP_OK:
         //~ strftime(s,40,"%y%m%e %T",localtime(&impRows[R].dt));
-        fl_draw(std::to_string(impRows[R].ok).c_str(), X, Y, W, H, FL_ALIGN_CENTER);
+        fl_draw(std::to_string(impRows[R].ok).c_str(),X,Y,W,H,FL_ALIGN_CENTER);
         break;
       }
 
       // BORDER
       fl_color(FL_LIGHT2);
-      fl_rect(X, Y, W, H);
+      fl_rect(X,Y,W,H);
       fl_pop_clip();
       return;
 
     default:
-        return;
+      return;
     }
     //NOTREACHED
 }
-
-txtFI::txtFI(int X,int Y,int W,int H,const char *L):Fl_File_Input(X,Y,W,H,L){}
 
 ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     Fl_Scroll(sx,sy,sw,sh,"ktPnVideoImp") {
@@ -101,9 +97,8 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
   box(FL_DOWN_BOX);
   align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
   Fl_File_Icon *ic_dir= Fl_File_Icon::find(".",Fl_File_Icon::DIRECTORY);
-  //~ Fl_File_Icon *ic_ref= Fl_File_Icon::find(".",Fl_File_Icon::LINK);
 
-  srcDir= new txtFI(sx+dx,sy+dy,txt_w,txt_h,"SRC");
+  srcDir= new Fl_File_Input(sx+dx,sy+dy,txt_w,txt_h,"SRC");
     srcDir->align(FL_ALIGN_TOP);
     viPref->get("srcPath",c_buf,"",buf_size);
     srcDir->value(c_buf);
@@ -111,7 +106,7 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
     btnSelSrcDir->labelcolor(FL_YELLOW);
     ic_dir->label(btnSelSrcDir);
     btnSelSrcDir->callback(btnSelSrcDir_cb,this);
-  dstDir= new txtFI(sx+dx+txt_w+dx+bt_dir_w+3*dx,sy+dy,txt_w,txt_h,"DST");
+  dstDir= new Fl_File_Input(sx+dx+txt_w+dx+bt_dir_w+3*dx,sy+dy,txt_w,txt_h,"DST");
     dstDir->align(FL_ALIGN_TOP);
     viPref->get("dstPath",c_buf,"",buf_size);
     dstDir->value(c_buf);
@@ -126,13 +121,13 @@ ktPnVideoImp::ktPnVideoImp(int sx,int sy,int sw,int sh,ktMainForm *o):
   btnDoImport= new Fl_Button(sx+sw-dx-bt_do_imp_w,srcDir->y()+txt_h+1*dy,bt_do_imp_w,bt_do_imp_h,"Выполнить импорт");
     btnDoImport->callback(btnDoImport_cb,this);
   impTbl= new impTable(sx+dx,btnTblRefresh->y()+btnTblRefresh->h(),sw-2*dx,sh-2*dy-txt_h-3*dy,"Список для импорта");
-    impTbl->cols(C_END); impTbl->col_header(1); impTbl->col_resize(1); impTbl->col_header_height(txt_h);
+    impTbl->cols(C_IMP_END); impTbl->col_header(1); impTbl->col_resize(1); impTbl->col_header_height(txt_h);
     impTbl->row_header(1); impTbl->row_resize(0); impTbl->row_header_width(txt_h/2);
-    impTbl->col_width(C_NPP,20);
-    impTbl->col_width(C_SRC,100);
-    impTbl->col_width(C_DST,200);
-    impTbl->col_width(C_SIZE,80);
-    impTbl->col_width(C_DATE,200);
+    impTbl->col_width(C_IMP_NPP,20);
+    impTbl->col_width(C_IMP_SRC,100);
+    impTbl->col_width(C_IMP_DST,200);
+    impTbl->col_width(C_IMP_SIZE,80);
+    impTbl->col_width(C_IMP_DATE,200);
 
   end();
 
@@ -248,11 +243,8 @@ void ktPnVideoImp::loadDir(){
   if(dstPath.back() != '/') {
     dstPath.append("/"); setDstPath(dstPath.c_str());
   }
-  //~ printf("last= <%lu> str=<%s>\n",dstPath.find_last_not_of(" "),dstPath.c_str());
 
   std::vector<std::string> v;
-  //~ return;
-///*
   time_t dt;
   static char s[40];
   std::string dst_name= ""; //"yymmdd-hhmm-00000.MTS";
@@ -265,8 +257,6 @@ void ktPnVideoImp::loadDir(){
       if(!is_regular_file(status(x))) {continue;}
       if(is_symlink(status(x))) {continue;}
       if(is_symlink(symlink_status(x))) {continue;}
-        //~ printf("f= %s file_type=%d\n",x.path().filename().c_str(),status(x).type());
-      //~ v.push_back(x.path().filename().string());
       v.push_back(x.path().string());
     }
     std::sort(v.begin(), v.end()); // Сортировка
@@ -288,7 +278,6 @@ void ktPnVideoImp::loadDir(){
   } else {
     printf("dir not exists ==> %s\n",srcPath.c_str());
   }
-//*/
 }
 
 void ktPnVideoImp::setSrcPath(std::string str){

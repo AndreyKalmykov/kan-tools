@@ -6,41 +6,39 @@ itButton::itButton(int X,int Y,int W,int H,const char *l,ktPnMenu *m,MenuItems i
   mn= m;
   value(0);
   it_name= it_def;
-  //~ when(FL_WHEN_CHANGED);
   callback(mn->menu_cb);
-  //~ set_changed();
 }
-
 
 ktPnMenu::ktPnMenu(int sx,int sy,int sw,int sh,ktMainForm *o):Fl_Scroll(sx,sy,sw,sh,"ktPnMenu") {
   mf= o;
-  //~ printf("pnMenu-Constr mf=%s\n",mf->label());
   resizable(NULL);
   box(FL_DOWN_BOX);
   align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
 
   mn= new Fl_Pack(x()+dx,y()+dy,mn_w,h()+dy,"mn");
-  mn->type(Fl_Pack::VERTICAL);
-  mn->box(FL_DOWN_FRAME);
-  mn->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
-  mn->spacing(5);
+    mn->type(Fl_Pack::VERTICAL);
+    mn->box(FL_DOWN_FRAME);
+    //~ mn->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+    mn->labeltype(FL_NO_LABEL);
+    mn->spacing(5);
     bt1= new itButton(0,0,0,bt_h,"bt1",this);
     bt2= new itButton(0,0,0,bt_h,"bt2",this);
     itVideo= new itButton(0,0,0,bt_h,"Видео",this);
-      //~ itVideo->callback(itVideo_cb,this);
     grVideo= new Fl_Group(0,0,mn_w,bt_h*3+dy,"sm30");
-    grVideo->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+    //~ grVideo->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+      grVideo->labeltype(FL_NO_LABEL);
       mnVideo= new Fl_Pack(0+dx,0,grVideo->w()-dx,grVideo->h(),"mnVideo");
       mnVideo->type(Fl_Pack::VERTICAL);
-      mnVideo->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+      //~ mnVideo->align(FL_ALIGN_CLIP|FL_ALIGN_INSIDE|FL_ALIGN_WRAP);
+      mnVideo->labeltype(FL_NO_LABEL);
       mnVideo->box(FL_DOWN_FRAME);
       mnVideo->spacing(0);
         itImpVideo= new itButton(0,0,0,bt_h,"Импорт видео",this,IT_VIDEOIMP);
-        bt32= new itButton(0,0,0,bt_h,"bt32",this);
+        itProxyVideo= new itButton(0,0,0,bt_h,"Прокси видео",this,IT_VIDEOPROXY);
         bt33= new itButton(0,0,0,bt_h,"bt33",this);
       mnVideo->end();
     grVideo->end();
-    //~ grVideo->hide();
+    grVideo->hide();
     bt4= new itButton(0,0,0,bt_h,"bt4",this);
     bt5= new itButton(0,0,0,bt_h,"bt5",this);
 
@@ -48,9 +46,7 @@ ktPnMenu::ktPnMenu(int sx,int sy,int sw,int sh,ktMainForm *o):Fl_Scroll(sx,sy,sw
   end();
 
     itVideo->value(1);
-    //~ itImpVideo->value(1);
-    //~ itImpVideo->do_callback();
-  //~ printf("when=%d\n",mn->when());
+    itVideo->do_callback();
 
 };
 
@@ -61,42 +57,20 @@ void ktPnMenu::resize(int X, int Y, int W, int H){
   return Fl_Scroll::resize(X,Y,W,H);
 }
 
-int ktPnMenu::handle(int e){
-  //~ if (e!=FL_MOVE && e!=FL_NO_EVENT && e!=FL_ENTER && e!=FL_LEAVE)
-    //~ printf("ktPnMenu - %s (%d)\n", fl_eventnames[e], e);
-    //~ printf("mn->value - (%d)\n", mn->value());
-
-  //~ redraw();
-
-  return Fl_Group::handle(e);
-}
-
-void ktPnMenu::draw(){
-  //~ if(itVideo->value() == 0) {grVideo->hide();}
-  //~ else {grVideo->show();}
-
-  return Fl_Scroll::draw();
-}
-
 void ktPnMenu::menu_cb(Fl_Widget *o){
-  //~ Fl_Scroll *frm= (Fl_Scroll *)o;
-  //~ printf("menu_cb grp=%s\n",grp->label());
   itButton *b= (itButton *)o;
-
-  //~ printf("menu_cb b=%s\n",b->label());
   MenuItems menu_it= IT_DEFAULT;
   if(b->mn->itVideo->value() != 0) {
     b->mn->grVideo->show();
-    //~ printf("itImpVideo->value()=%d\n",b->mn->itImpVideo->value());
     if(b->mn->itImpVideo->value() != 0) {menu_it= b->mn->itImpVideo->it_name;}
+    if(b->mn->itProxyVideo->value() != 0) {menu_it= b->mn->itProxyVideo->it_name;}
   } else { b->mn->grVideo->hide();}
-
   b->mn->redraw();
-  //~ printf("curr_it=%d menu_it=%d\n",b->mn->curr_item,menu_it);
   if(menu_it != b->mn->curr_item){
     b->mn->curr_item= menu_it;
     switch(menu_it){
     case IT_VIDEOIMP: {b->mn->mf->doPnVideoImp(); break;}
+    case IT_VIDEOPROXY: {b->mn->mf->doPnVideoProxy(); break;}
     default: {b->mn->mf->doPnDefault(); break;}
     }
   }

@@ -14,13 +14,15 @@ set(CPPFILES
   ktPnMenu.cpp
   ktPnWrk.cpp
   ktPnVideoImp.cpp
+  ktPnVideoProxy.cpp
 )
 set(FLTK_LIBS fltk fltk_images)
 set(BOOST_LIBS boost_system boost_filesystem)
 
 #~ set(FLTK_DIR /home/kan/wrk/fltk-1.3.4-1/build)
 #~ set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12244/build)
-set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12247/build)
+#~ set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12247/build)
+set(FLTK_DIR /home/kan/wrk/fltk-1.4.x-r12261/build)
 
 find_package(FLTK REQUIRED NO_MODULE)
 
