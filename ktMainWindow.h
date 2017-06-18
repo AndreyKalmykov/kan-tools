@@ -1,15 +1,24 @@
 #ifndef ktMainWindow_h
 #define ktMainWindow_h
 
-class ktMainWindow: public wxFrame
-{
+#include <wx/wxprec.h>
+#ifndef WX_PRECOMP
+    #include <wx/wx.h>
+#endif
+
+class ktMainWindow: public wxFrame {
 public:
-    MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+    ktMainWindow(const wxString& title,const wxPoint& pos,const wxSize& size);
 private:
-    void OnHello(wxCommandEvent& event);
+    //~ ktApp *app;
+    //~ void OnHello(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     wxDECLARE_EVENT_TABLE();
+};
+
+enum {
+    ID_Hello = 1
 };
 
 /*
